@@ -2,7 +2,10 @@ package kuifir.bean.definition;
 
 import kuifir.ioc.overview.domain.User;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.util.Map;
 
 /**
  * Package: kuifir.bean.definition
@@ -24,6 +27,14 @@ public class BeanInstantiationDemo {
         User userByInstanceMethod = beanFactory.getBean("user-by-instance-method",User.class);
         System.out.println(userByInstanceMethod);
         System.out.println(user == userByInstanceMethod);
+        User userByFactorBean = beanFactory.getBean("user-by-factory-bean",User.class);
+        System.out.println(userByFactorBean);
+        System.out.println(user == userByFactorBean);
+        System.out.println(userByInstanceMethod == userByFactorBean);
+
+        ListableBeanFactory listableBeanFactory = (ListableBeanFactory)beanFactory;
+        final Map<String, User> beansOfType = listableBeanFactory.getBeansOfType(User.class);
+        beansOfType.forEach((k,v)-> System.out.println(k+"---"+v));
     }
 
     public static User createUser() {

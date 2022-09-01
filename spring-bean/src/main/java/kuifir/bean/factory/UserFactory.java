@@ -1,5 +1,6 @@
 package kuifir.bean.factory;
 
+import kuifir.bean.definition.BeanInstantiationDemo;
 import kuifir.ioc.overview.domain.User;
 
 /**
@@ -15,10 +16,7 @@ import kuifir.ioc.overview.domain.User;
  */
 public interface UserFactory {
     default User createUser(){
-        User user = new User();
-        user.setName("kuifir");
-        user.setId(1L);
-        return user;
+        return BeanInstantiationDemo.createUser();
     }
 
 }

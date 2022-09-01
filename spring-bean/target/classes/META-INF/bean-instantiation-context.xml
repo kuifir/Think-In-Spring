@@ -12,4 +12,7 @@
     <bean id="user-by-instance-method" factory-bean="userFactory" factory-method="createUser"/>
 
     <bean id="userFactory" class="kuifir.bean.factory.DefaultUserFactory"/>
+
+    <!--FactoryBean 实例化 Bean-->
+    <bean id="user-by-factory-bean" class="kuifir.bean.factory.UserFactoryBean"/>
 </beans>
