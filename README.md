@@ -83,6 +83,18 @@ Follow the lessons of the geekbang
             ```java
               ServiceLoader<UserFactory> serviceLoader = beanFactory.getBean("userFactoryServiceLoader",ServiceLoader.class);
             ```
-   2. 通过 AutowireCapableBeanFactory#createBean(java.lang.Class, int, boolean)
+   2. 通过 AutowireCapableBeanFactory#createBean(java.lang.Class, int, boolean)  
+      示例
+      - 先通过ApplicationContext 获取 AutowireCapableBeanFactory,通过creatBean方法获取factoryBean
+        ```java
+          ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:\\META-INF\\special-bean-instantiation-context.xml");
+          // 通过applicationContext 获取 AutowireCapableBeanFactory
+          AutowireCapableBeanFactory beanFactory = applicationContext.getAutowireCapableBeanFactory();
+        ```
+      - 通过FactoryBean创建示例，参数类型必须是实现类不能是接口
+        ```java 
+           UserFactory userFactory = beanFactory.createBean(DefaultUserFactory.class);// 类型不能使用接口，要使用实现类
+            System.out.println(userFactory.createUser());
+        ```
    3. 通过 BeanDefinitionRegistry#registerBeanDefinition(String,BeanDefinition)
  
