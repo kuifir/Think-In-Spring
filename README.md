@@ -54,7 +54,35 @@ Follow the lessons of the geekbang
            <bean id="user-by-factory-bean" class="kuifir.bean.factory.UserFactoryBean"/>
        ```
 #### 特殊方式
-   1. 通过 ServiceLoaderFactoryBean（配置元信息：XML、Java 注解和 Java API ）
+   1. 通过 ServiceLoaderFactoryBean（配置元信息：XML、Java 注解和 Java API ）  
+      - 原生ServiceLoader示例
+        - 创建java.util.ServiceLoader 类中第一行的定义的目录
+          ```java
+            private static final String PREFIX = "META-INF/services/";
+          ``` 
+        - 在上面创建的目录下创建一个文件，文件名为接口的全类名
+        - 把实现类的类名写到上面的文件中（相同的类写多个只会生成一个，会去重）
+        - 通过静态方法 ``` ServiceLoader.load(Class<S> service, ClassLoader loader)```
+        来获取同类型的一个ServiceLoader,然后通过迭代器方法获取并作出输出。
+          ```java
+            ServiceLoader<UserFactory> serviceLoader = ServiceLoader.load(UserFactory.class, Thread.currentThread().getContextClassLoader());
+            Iterator<UserFactory> iterator = serviceLoader.iterator();
+            while (iterator.hasNext()){
+                UserFactory userFactory = iterator.next();
+                System.out.println(userFactory.createUser());
+            }
+          ```
+      - spring ServieLoaderFactoryBean示例
+        - 实例化一个ServiceLoaderFactoryBean对象，其中配置一个servecieType属性，
+            ```java
+              <bean id="userFactoryServiceLoader" class="org.springframework.beans.factory.serviceloader.ServiceLoaderFactoryBean">
+                  <property name="serviceType" value="kuifir.bean.factory.UserFactory"/>
+              </bean>
+            ```
+        - 依赖查找获取ServiceLoader
+            ```java
+              ServiceLoader<UserFactory> serviceLoader = beanFactory.getBean("userFactoryServiceLoader",ServiceLoader.class);
+            ```
    2. 通过 AutowireCapableBeanFactory#createBean(java.lang.Class, int, boolean)
    3. 通过 BeanDefinitionRegistry#registerBeanDefinition(String,BeanDefinition)
  
