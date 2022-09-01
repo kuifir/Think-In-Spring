@@ -97,4 +97,66 @@ Follow the lessons of the geekbang
             System.out.println(userFactory.createUser());
         ```
    3. 通过 BeanDefinitionRegistry#registerBeanDefinition(String,BeanDefinition)
- 
+      示例
+      - 创建容器
+      ```java         
+      AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
+      ```
+      - 注册 Configuration Class (配置类)这个类相当于代替了xml文件
+      ```java
+              applicationContext.register(AnnotationBeanDefinitionDemo.class); 
+      ```
+      - 启动运用上下文
+      ```java
+      applicationContext.refresh(); 
+      ```
+      - 注册BeanDefinition
+        - 通过注解 注册BeanDefinition
+          - 通过@Bean 方式定义
+            ```java
+            // 1. 通过@Bean 方式定义
+            @Bean(name = {"user", "kuifir-user"})
+            public User user(){
+                User user = new User();
+                user.setId(11L);
+                user.setName("kuifir");
+                return user;
+            } 
+            ```
+          - 通过@Component
+            ```java
+               // 2. 通过@Component
+               @Component // 可以定义当前类作为SpringBean(组件)
+               public static class Config{ 
+            ```
+          - 通过@Import导入
+            ```java 
+                // 3. 通过@Import导入
+                @Import(AnnotationBeanDefinitionDemo.Config.class)//通过@Import来进行导入
+            ```
+        - 通过BeanDefinition 注册 API 实现
+          - 1.命名Bean 的注册方式
+            ```java
+            BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(beanClass);
+            beanDefinitionBuilder.addPropertyValue("id",1).addPropertyValue("name","kuifir");
+            // 注册BeanDefinition
+            registry.registerBeanDefinition(beanName,beanDefinitionBuilder.getBeanDefinition()); 
+            ```
+          - 2.非命名Bean 的注册方式
+             ```java
+             BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(beanClass);
+             beanDefinitionBuilder.addPropertyValue("id",1).addPropertyValue("name","kuifir");
+             //注册BeanDefinition
+             BeanDefinitionReaderUtils.registerWithGeneratedName(beanDefinitionBuilder.getBeanDefinition(),registry); 
+              ```
+      - 进行依赖查找
+        ```java
+          Map<String, Config> configBeans = applicationContext.getBeansOfType(Config.class);
+          System.out.println("Config 类型的所有的Bean" + configBeans);
+          Map<String, User> userBeans = applicationContext.getBeansOfType(User.class);
+          System.out.println("User 类型的所有的Bean" + userBeans); 
+        ```
+      - 显式关闭Spring应用上下文
+        ```java
+          applicationContext.close(); 
+        ```
