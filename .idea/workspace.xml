@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="80e7bc1a-9351-4242-aafe-a092eee91218" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring-bean/src/main/java/kuifir/bean/definition/BeanInstantiationDemo.java" beforeDir="false" afterPath="$PROJECT_DIR$/spring-bean/src/main/java/kuifir/bean/definition/BeanInstantiationDemo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring-bean/src/main/resources/META-INF/bean-instantiation-context.xml" beforeDir="false" afterPath="$PROJECT_DIR$/spring-bean/src/main/resources/META-INF/bean-instantiation-context.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring-bean/target/classes/META-INF/bean-instantiation-context.xml" beforeDir="false" afterPath="$PROJECT_DIR$/spring-bean/target/classes/META-INF/bean-instantiation-context.xml" afterDir="false" />
-    </list>
+    <list default="true" id="80e7bc1a-9351-4242-aafe-a092eee91218" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -161,7 +155,7 @@
       <workItem from="1661686932422" duration="3121000" />
       <workItem from="1661947355858" duration="6146000" />
       <workItem from="1661959911799" duration="2124000" />
-      <workItem from="1662032730219" duration="2246000" />
+      <workItem from="1662032730219" duration="2617000" />
     </task>
     <servers />
   </component>
