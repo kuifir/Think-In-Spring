@@ -3,6 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="80e7bc1a-9351-4242-aafe-a092eee91218" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring-bean/src/main/java/kuifir/bean/definition/BeanInstantiationDemo.java" beforeDir="false" afterPath="$PROJECT_DIR$/spring-bean/src/main/java/kuifir/bean/definition/BeanInstantiationDemo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring-bean/src/main/resources/META-INF/bean-instantiation-context.xml" beforeDir="false" afterPath="$PROJECT_DIR$/spring-bean/src/main/resources/META-INF/bean-instantiation-context.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring-bean/target/classes/META-INF/bean-instantiation-context.xml" beforeDir="false" afterPath="$PROJECT_DIR$/spring-bean/target/classes/META-INF/bean-instantiation-context.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,6 +18,7 @@
       <list>
         <option value="spring-beans.schema" />
         <option value="AnnotationType" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -155,7 +160,8 @@
       <workItem from="1661525903999" duration="5599000" />
       <workItem from="1661686932422" duration="3121000" />
       <workItem from="1661947355858" duration="6146000" />
-      <workItem from="1661959911799" duration="1611000" />
+      <workItem from="1661959911799" duration="2124000" />
+      <workItem from="1662032730219" duration="2246000" />
     </task>
     <servers />
   </component>
@@ -175,22 +181,22 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="259" y="286" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.0.1366.728@0.0.1366.728" timestamp="1661350183485" />
-    <state width="1323" height="206" key="GridCell.Tab.0.bottom" timestamp="1661961480613">
+    <state width="1323" height="206" key="GridCell.Tab.0.bottom" timestamp="1662034475433">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="206" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1661961480613" />
-    <state width="1323" height="206" key="GridCell.Tab.0.center" timestamp="1661961480613">
+    <state width="1323" height="206" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1662034475433" />
+    <state width="1323" height="206" key="GridCell.Tab.0.center" timestamp="1662034475432">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="206" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1661961480613" />
-    <state width="1323" height="206" key="GridCell.Tab.0.left" timestamp="1661961480613">
+    <state width="1323" height="206" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1662034475432" />
+    <state width="1323" height="206" key="GridCell.Tab.0.left" timestamp="1662034475432">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="206" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1661961480613" />
-    <state width="1323" height="206" key="GridCell.Tab.0.right" timestamp="1661961480613">
+    <state width="1323" height="206" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1662034475432" />
+    <state width="1323" height="206" key="GridCell.Tab.0.right" timestamp="1662034475432">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="206" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1661961480613" />
+    <state width="1323" height="206" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1662034475432" />
     <state x="184" y="8" key="SettingsEditor" timestamp="1661002972972">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -207,9 +213,9 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="57" y="24" key="new project wizard/0.0.1366.728@0.0.1366.728" timestamp="1661438661192" />
-    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1661960076599">
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1662033589784">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1661960076599" />
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1662033589784" />
   </component>
 </project>
