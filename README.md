@@ -6,6 +6,7 @@ Follow the lessons of the geekbang
 #### 常规方式
   1. 通过构造器（配置元信息：XML、Java 注解和 Java API ）
   2. 通过静态工厂方法（配置元信息：XML 和 Java API ）  
+
     示例：  
      - 通过xml定义一个bean ，通过class 和 factory-method 确定 作为工厂方法的静态方法
         ```xml
@@ -26,7 +27,7 @@ Follow the lessons of the geekbang
            <bean id="user-by-instance-method" factory-bean="userFactory" factory-method="createUser"/>
        
            <bean id="userFactory" class="kuifir.bean.factory.DefaultUserFactory"/>
-       ``` 
+       ```
      - 输出一下看能否创建成功，并且看一下是否和静态方法创建的对象是同一个对象(否)
        ```java
          User userByInstanceMethod = beanFactory.getBean("user-by-instance-method",User.class);
@@ -59,7 +60,7 @@ Follow the lessons of the geekbang
         - 创建java.util.ServiceLoader 类中第一行的定义的目录
           ```java
             private static final String PREFIX = "META-INF/services/";
-          ``` 
+          ```
         - 在上面创建的目录下创建一个文件，文件名为接口的全类名
         - 把实现类的类名写到上面的文件中（相同的类写多个只会生成一个，会去重）
         - 通过静态方法 ``` ServiceLoader.load(Class<S> service, ClassLoader loader)```
@@ -83,8 +84,11 @@ Follow the lessons of the geekbang
             ```java
               ServiceLoader<UserFactory> serviceLoader = beanFactory.getBean("userFactoryServiceLoader",ServiceLoader.class);
             ```
-   2. 通过 AutowireCapableBeanFactory#createBean(java.lang.Class, int, boolean)  
+      
+   2. 通过 AutowireCapableBeanFactory#createBean(java.lang.Class, int, boolean) 
+      
       示例
+      
       - 先通过ApplicationContext 获取 AutowireCapableBeanFactory,通过creatBean方法获取factoryBean
         ```java
           ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:\\META-INF\\special-bean-instantiation-context.xml");
@@ -96,6 +100,7 @@ Follow the lessons of the geekbang
            UserFactory userFactory = beanFactory.createBean(DefaultUserFactory.class);// 类型不能使用接口，要使用实现类
             System.out.println(userFactory.createUser());
         ```
+      
    3. 通过 BeanDefinitionRegistry#registerBeanDefinition(String,BeanDefinition)
       示例
       - 创建容器
@@ -148,7 +153,7 @@ Follow the lessons of the geekbang
              beanDefinitionBuilder.addPropertyValue("id",1).addPropertyValue("name","kuifir");
              //注册BeanDefinition
              BeanDefinitionReaderUtils.registerWithGeneratedName(beanDefinitionBuilder.getBeanDefinition(),registry); 
-              ```
+             ```
       - 进行依赖查找
         ```java
           Map<String, Config> configBeans = applicationContext.getBeansOfType(Config.class);
@@ -160,3 +165,87 @@ Follow the lessons of the geekbang
         ```java
           applicationContext.close(); 
         ```
+
+### Bean的初始化
+
+- @PostConstruct 标注方法 
+
+  示例
+
+  - 创建一个有@PostConstruct标注的方法
+
+    ```java
+      // 1.基于 @PostConstruct 注解
+        @PostConstruct
+        public void init(){
+            System.out.println("@PostConstruct: UserFactory 初始化中");
+        }
+    ```
+
+  - 创建实例会自动回调初始化方法
+
+    ```java
+    @Configuration //Configuration Class
+    public class BeanInitializationDemo {
+        public static void main(String[] args) {
+            // 创建BeanFactory容器
+            AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
+            //注册 Configuration Class(配置类)
+            applicationContext.register(BeanInitializationDemo.class);
+            // 启动Spring 应用上下文
+            applicationContext.refresh();
+            // 依赖查找UserFactory 此时应该自动回调@PostConsturct 方法
+            UserFactory userFactory = applicationContext.getBean(UserFactory.class);
+    
+            // 关闭Spring 应用上下文
+            applicationContext.close();
+        }
+    
+        @Bean(initMethod = "initUserFactory")
+        public UserFactory userFactory(){
+            return new DefaultUserFactory();
+        }
+    }
+    ```
+
+    
+
+- 实现 InitializingBean 接口的 afterPropertiesSet() 方法 
+
+  - 实现Spring InitializingBean接口，实现 afterPropertiesSet()方法
+
+    ```java
+      @Override
+      public void afterPropertiesSet() throws Exception {
+        System.out.println("InitializingBean#afterPropertiesSet：UserFactory 初始化中");
+      }
+    ```
+
+  - 创建实例会自动回调初始化方法
+
+- 自定义初始化方法 
+
+  - XML 配置： 
+
+  - Java 注解：@Bean(initMethod=”init”)
+
+    - 在@Bean中增加initMethid属性，值为自定义初始化方法
+
+      ```java
+         @Bean(initMethod = "initUserFactory")
+          public UserFactory userFactory(){
+              return new DefaultUserFactory();
+         }
+      ```
+
+  -  Java API：AbstractBeanDefinition#setInitMethodName(String)
+
+思考：假设以上三种方式均在同一 Bean 中定义，那么这些方法的执行顺序是怎样？
+```text
+@PostConstruct: UserFactory 初始化中
+InitializingBean#afterPropertiesSet：UserFactory 初始化中
+自定义初始化方法 initUserFactory()：UserFactory 初始化中 
+```
+
+
+
