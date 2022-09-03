@@ -262,3 +262,53 @@ InitializingBean#afterPropertiesSet：UserFactory 初始化中
   - 非延迟的对象在应用上下文初始化之前进行初始化
 
   - 延迟的对象在应用上下文初始化之后进行初始化 
+
+###  销毁 Spring Bean
+
+- @PreDestroy 标注方法 
+  实例
+
+  - 创建一个带有@PreDestroy注解的方法,应用上下文关闭前会自动回调
+
+    ```java
+    
+        @PreDestroy
+        public void preDistroy(){
+            System.out.println("@PreDestroy: UserFactory 销毁中...");
+        }
+    ```
+
+    
+
+- 实现 DisposableBean 接口的 destroy() 方法
+
+  ```java
+      @Override
+      public void destroy() throws Exception {
+          System.out.println("DisposableBean#destroy() : UserFactory 销毁中...");
+      }
+  ```
+
+-  自定义销毁方法
+
+  - XML 配置： 
+
+  -  Java 注解：@Bean(destroy=”destroy”) 
+
+    ```java
+    @Bean(initMethod = "initUserFactory",destroyMethod = "doDestroy")
+    ```
+
+  -  Java API：AbstractBeanDefinition#setDestroyMethodName(String)
+
+-  思考：假设以上三种方式均在同一 Bean 中定义，那么这些方法的执行顺序是怎样？  
+
+  ```text
+  应用上下文准备关闭...
+  @PreDestroy: UserFactory 销毁中...
+  DisposableBean#destroy() : UserFactory 销毁中...
+  自定义销毁方法 doDestroy()：UserFactory销毁中
+  应用上下文已关闭...
+  ```
+
+  
