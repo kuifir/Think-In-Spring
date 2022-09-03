@@ -311,4 +311,11 @@ InitializingBean#afterPropertiesSet：UserFactory 初始化中
   应用上下文已关闭...
   ```
 
-  
+###  垃圾回收 Spring Bean
+
+简单实现
+
+1. 关闭 Spring 容器（应用上下文）
+2. 执行 GC（不是必须的，可能还要等一段时间） 
+
+3. Spring Bean 覆盖的 finalize() 方法被回调 
