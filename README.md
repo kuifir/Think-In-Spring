@@ -311,7 +311,7 @@ InitializingBean#afterPropertiesSet：UserFactory 初始化中
   应用上下文已关闭...
   ```
 
-###  垃圾回收 Spring Bean
+### 垃圾回收 Spring Bean
 
 简单实现
 
