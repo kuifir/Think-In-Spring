@@ -247,5 +247,18 @@ InitializingBean#afterPropertiesSet：UserFactory 初始化中
 自定义初始化方法 initUserFactory()：UserFactory 初始化中 
 ```
 
+###  延迟初始化 
 
+- XML 配置： 
 
+```xml
+<bean lazy-init=”true” ... /
+```
+
+- Java 注解：@Lazy(true) 
+
+- 思考：当某个 Bean 定义为延迟初始化，那么，Spring 容器返回的对象与非延迟的对象存在怎样的差异？
+
+  - 非延迟的对象在应用上下文初始化之前进行初始化
+
+  - 延迟的对象在应用上下文初始化之后进行初始化 

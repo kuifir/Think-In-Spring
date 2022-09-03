@@ -5,6 +5,7 @@ import kuifir.bean.factory.UserFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 
 /**
  * Package: kuifir.bean.definition
@@ -26,6 +27,7 @@ public class BeanInitializationDemo {
         applicationContext.register(BeanInitializationDemo.class);
         // 启动Spring 应用上下文
         applicationContext.refresh();
+        System.out.println("应用上下文已启动...");
         // 依赖查找UserFactory 此时应该自动回调@PostConsturct 方法
         UserFactory userFactory = applicationContext.getBean(UserFactory.class);
 
@@ -34,6 +36,7 @@ public class BeanInitializationDemo {
     }
 
     @Bean(initMethod = "initUserFactory")
+    @Lazy
     public UserFactory userFactory(){
         return new DefaultUserFactory();
     }
