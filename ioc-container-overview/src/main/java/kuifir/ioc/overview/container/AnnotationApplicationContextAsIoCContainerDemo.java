@@ -30,7 +30,7 @@ public class AnnotationApplicationContextAsIoCContainerDemo {
 
         // 将当前类作为配置类
         applicationContext.register(AnnotationApplicationContextAsIoCContainerDemo.class);
-        // 启动运用上下文
+        // 启动应用上下文
         applicationContext.refresh();
         // 类型查找集合
         lookupCollectionByType(applicationContext);

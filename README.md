@@ -319,3 +319,62 @@ InitializingBean#afterPropertiesSet：UserFactory 初始化中
 2. 执行 GC（不是必须的，可能还要等一段时间） 
 
 3. Spring Bean 覆盖的 finalize() 方法被回调 
+
+## Spring IoC 依赖查找 （Dependency Lookup）
+
+### 依赖查找的今世前生 
+
+-  单一类型依赖查找 
+  - JNDI - javax.naming.Context#lookup(javax.naming.Name) 
+  - JavaBeans - java.beans.beancontext.BeanContext
+
+-  集合类型依赖查找 
+  - java.beans.beancontext.BeanContext
+
+- 层次性依赖查找 
+  -  java.beans.beancontext.BeanContext  
+
+### 单一类型依赖查找
+
+ 单一类型依赖查找接口 - BeanFactory 
+
+-  根据 Bean 名称查找 
+
+  - getBean(String) 
+
+  - Spring 2.5 覆盖默认参数：getBean(String,Object...)  
+
+- 根据 Bean 类型查找 
+
+  - Bean 实时查找 
+    - Spring 3.0 getBean(Class)
+    - Spring 4.1 覆盖默认参数：getBean(Class,Object...)
+    
+  - Spring 5.1 Bean 延迟查找 
+    - getBeanProvider(Class) 
+      示例：
+    
+      ```java
+        private static void lookupCollectionByObjectProvider(AnnotationConfigApplicationContext applicationContext) {
+              ObjectProvider<String> beanProvider = applicationContext.getBeanProvider(String.class);
+              System.out.println(beanProvider.getObject());
+          }
+      ```
+    
+      
+    
+    -  getBeanProvider(ResolvableType)
+
+-  根据 Bean 名称 + 类型查找：getBean(String,Class) 
+
+### 集合类型依赖查找
+
+### 层次性依赖查找 
+
+### 延迟依赖查找
+
+### 安全依赖查找
+
+### 内建可查找的依赖 
+
+### 依赖查找中的经典异常   
