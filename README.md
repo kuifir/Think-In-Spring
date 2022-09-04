@@ -355,10 +355,8 @@ InitializingBean#afterPropertiesSet：UserFactory 初始化中
       示例：
     
       ```java
-        private static void lookupCollectionByObjectProvider(AnnotationConfigApplicationContext applicationContext) {
-              ObjectProvider<String> beanProvider = applicationContext.getBeanProvider(String.class);
-              System.out.println(beanProvider.getObject());
-          }
+      ObjectProvider<String> beanProvider =   applicationContext.getBeanProvider(String.class);
+      System.out.println(beanProvider.getObject());
       ```
     
       
