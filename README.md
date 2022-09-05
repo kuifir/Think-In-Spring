@@ -365,9 +365,35 @@ InitializingBean#afterPropertiesSet：UserFactory 初始化中
 
 -  根据 Bean 名称 + 类型查找：getBean(String,Class) 
 
-### 集合类型依赖查找
+### 集合类型依赖查找 - ListableBeanFactor 
+
+- 根据 Bean 类型查找 
+  -  获取同类型 Bean 名称列表 
+    -  getBeanNamesForType(Class) 
+    -  Spring 4.2 getBeanNamesForType(ResolvableType) 
+  -  获取同类型 Bean 实例列表
+    - getBeansOfType(Class) 以及重载方法 
+
+-   通过注解类型查找 
+  -  Spring 3.0 获取标注类型 Bean 名称列表
+    -  getBeanNamesForAnnotation(Class<? extends Annotation>) 
+  -  Spring 3.0 获取标注类型 Bean 实例列表
+    -   getBeansWithAnnotation(Class<? extends Annotation>) 
+  -  Spring 3.0 获取标注类型 Bean 实例列表
+    - findAnnotationOnBean(String,Class <? extends Annotation) 
 
 ### 层次性依赖查找 
+
+// 评论区说具体的类可能有错误
+
+- 双亲 BeanFactory：getParentBeanFactory()
+
+-  层次性查找 
+  -  根据 Bean 名称查找 • 基于 containsLocalBean 方法实现 
+  - 根据 Bean 类型查找实例列表 
+    -  单一类型：BeanFactoryUtils#beanOfTypeIncludingAncestors 
+    -  集合类型：BeanFactoryUtils#beansOfTypeIncludingAncestors 
+  -  根据 Java 注解查找名称列表 • BeanFactoryUtils#beanNamesForTypeIncludingAncestors  
 
 ### 延迟依赖查找
 
