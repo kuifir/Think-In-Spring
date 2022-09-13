@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 /**
  * Package: kuifir.ioc.dependency
  * <p>
- * Description： 基于java注解方式实现依赖 字段 注入
+ * Description： 基于java注解方式实现依赖 方法 注入
  * <p>
  * Author: baci
  * <p>
@@ -19,22 +19,32 @@ import javax.annotation.Resource;
  * <p>
  * Version: 0.0.1
  */
-public class AnnotationDependencyFieldInjectionDemo {
-    @Autowired
-    private UserHolder userHolder;
-    @Resource
-    private UserHolder userHolder2;
-    @Autowired
-    private static UserHolder userHolder3; // @Autowired 会忽略 static 字段
-//    @Resource
-//    private static UserHolder userHolder4; // @Resource annotation is not supported on static fields
+public class AnnotationDependencyMethodInjectionDemo {
 
+    private UserHolder userHolder;
+
+    private UserHolder userHolder2;
+
+    @Autowired
+    public void initUserHolder(UserHolder userHolder){
+        this.userHolder = userHolder;
+    }
+
+    @Resource
+    public void initUserHolder2(UserHolder userHolder2){
+        this.userHolder2 = userHolder2;
+    }
+
+    @Bean
+    public UserHolder userHolder(User user){
+        return new UserHolder(user);
+    }
 
     public static void main(String[] args) {
         // 新建BeanFactory容器
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
         // 添加Configuration Class -> 也是 Spring Bean
-        applicationContext.register(AnnotationDependencyFieldInjectionDemo.class);
+        applicationContext.register(AnnotationDependencyMethodInjectionDemo.class);
 
         XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(applicationContext);
 
@@ -45,20 +55,14 @@ public class AnnotationDependencyFieldInjectionDemo {
         // 启动容器上下文
         applicationContext.refresh();
         // 依赖查找
-        AnnotationDependencyFieldInjectionDemo demo = applicationContext.getBean(AnnotationDependencyFieldInjectionDemo.class);
+        AnnotationDependencyMethodInjectionDemo demo = applicationContext.getBean(AnnotationDependencyMethodInjectionDemo.class);
 
          // 字段关联
         System.out.println(demo.userHolder);
         System.out.println(demo.userHolder2);
         System.out.println(demo.userHolder == demo.userHolder2);
-        System.out.println(demo.userHolder3);
-//        System.out.println(demo.userHolder4);
         // 关闭容器
         applicationContext.close();
     }
 
-    @Bean
-    public UserHolder userHolder(User user){
-        return new UserHolder(user);
-    }
 }
