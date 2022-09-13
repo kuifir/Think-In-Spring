@@ -26,6 +26,8 @@ public class AnnotationDependencyFieldInjectionDemo {
     private UserHolder userHolder2;
     @Autowired
     private static UserHolder userHolder3; // @Autowired 会忽略 static 字段
+    @Resource
+    private static UserHolder userHolder4; // @Resource annotation is not supported on static fields
 
 
     public static void main(String[] args) {
@@ -50,6 +52,7 @@ public class AnnotationDependencyFieldInjectionDemo {
         System.out.println(demo.userHolder2);
         System.out.println(demo.userHolder == demo.userHolder2);
         System.out.println(demo.userHolder3);
+//        System.out.println(demo.userHolder4);
         // 关闭容器
         applicationContext.close();
     }
