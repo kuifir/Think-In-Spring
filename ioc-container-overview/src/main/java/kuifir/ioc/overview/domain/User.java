@@ -3,6 +3,9 @@ package kuifir.ioc.overview.domain;
 import kuifir.ioc.overview.enums.City;
 import org.springframework.core.io.Resource;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Package: kuifir.ioc.overview.domain
  * <p>
@@ -18,8 +21,22 @@ public class User {
     private Long id;
     private String name;
     private City city;
+    private City[] workCities;
+    private List<City> lifeCities;
 
     private Resource configFileLocation;
+
+    public City[] getWorkCities() {
+        return workCities;
+    }
+
+    public List<City> getLifeCities() {
+        return lifeCities;
+    }
+
+    public void setLifeCities(List<City> lifeCities) {
+        this.lifeCities = lifeCities;
+    }
 
     @Override
     public String toString() {
@@ -27,8 +44,14 @@ public class User {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", city=" + city +
+                ", workCities=" + Arrays.toString(workCities) +
+                ", lifeCities=" + lifeCities +
                 ", configFileLocation=" + configFileLocation +
                 '}';
+    }
+
+    public void setWorkCities(City[] workCities) {
+        this.workCities = workCities;
     }
 
     public Resource getConfigFileLocation() {
