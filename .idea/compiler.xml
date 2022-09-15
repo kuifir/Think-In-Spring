@@ -8,8 +8,8 @@
         <outputRelativeToContentRoot value="true" />
         <module name="dependency-injection" />
         <module name="spring-bean" />
-        <module name="dependency-lookup" />
         <module name="java-beans-demo" />
+        <module name="dependency-lookup" />
         <module name="ioc-container-overview" />
       </profile>
     </annotationProcessing>
