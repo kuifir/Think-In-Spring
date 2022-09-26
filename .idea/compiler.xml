@@ -13,8 +13,5 @@
         <module name="ioc-container-overview" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="dependency-injection" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import javax.inject.Inject;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
@@ -32,12 +33,16 @@ public class AnnotationDependencyInjectionyResolutionDemo {
                         // 实时注入（eager=true）
                         // 通过类型（User.class）
                         // 字段名称("user")
+                        // 是否必要（primary = true）
 
     @Autowired
     private Map<String,User> users;
 
     @Autowired
     private Optional<User> userOptional;
+
+    @Inject
+    private User injectUser;
 
     public static void main(String[] args) {
         // 新建BeanFactory容器
@@ -57,6 +62,7 @@ public class AnnotationDependencyInjectionyResolutionDemo {
         AnnotationDependencyInjectionyResolutionDemo demo = applicationContext.getBean(AnnotationDependencyInjectionyResolutionDemo.class);
 
         System.out.println(demo.user); //输出superUser
+        System.out.println(demo.injectUser); //输出superUser
         System.out.println(demo.users);
         System.out.println(demo.userOptional); //输出superUser
 
