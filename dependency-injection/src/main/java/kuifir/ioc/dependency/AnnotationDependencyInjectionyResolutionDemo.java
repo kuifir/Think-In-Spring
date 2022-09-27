@@ -1,17 +1,22 @@
 package kuifir.ioc.dependency;
 
+import kuifir.ioc.dependency.annotation.InjectedUser;
+import kuifir.ioc.dependency.annotation.MyAutowired;
 import kuifir.ioc.overview.domain.User;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigUtils;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 
 import javax.inject.Inject;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.lang.annotation.Annotation;
+import java.util.*;
 
 /**
  * Package: kuifir.ioc.dependency
@@ -38,11 +43,33 @@ public class AnnotationDependencyInjectionyResolutionDemo {
     @Autowired
     private Map<String,User> users;
 
-    @Autowired
+//    @Autowired
+    @MyAutowired
     private Optional<User> userOptional;
 
     @Inject
     private User injectUser;
+
+    @InjectedUser
+    private User myInjectedUser;
+
+//    @Bean(AnnotationConfigUtils.AUTOWIRED_ANNOTATION_PROCESSOR_BEAN_NAME)
+//    public static AutowiredAnnotationBeanPostProcessor beanPostProcessor(){
+//        AutowiredAnnotationBeanPostProcessor beanPostProcessor = new AutowiredAnnotationBeanPostProcessor();
+//        // 替换原有注解处理，使用新注解 @InjectedUser
+////        beanPostProcessor.setAutowiredAnnotationType(InjectedUser.class);
+//        // @Autowired + @Inject + 新注解 @InjectedUser
+//        Set<Class<? extends Annotation>> autowiredAnnotationTypes = new LinkedHashSet<>(Arrays.asList(Autowired.class,Inject.class,InjectedUser.class));
+//        beanPostProcessor.setAutowiredAnnotationTypes(autowiredAnnotationTypes);
+//        return beanPostProcessor;
+//    }
+    @Bean
+    @Order(Ordered.LOWEST_PRECEDENCE-3)
+    public static AutowiredAnnotationBeanPostProcessor beanPostProcessor(){
+        AutowiredAnnotationBeanPostProcessor beanPostProcessor = new AutowiredAnnotationBeanPostProcessor();
+        beanPostProcessor.setAutowiredAnnotationType(InjectedUser.class);
+        return beanPostProcessor;
+    }
 
     public static void main(String[] args) {
         // 新建BeanFactory容器
@@ -65,6 +92,7 @@ public class AnnotationDependencyInjectionyResolutionDemo {
         System.out.println(demo.injectUser); //输出superUser
         System.out.println(demo.users);
         System.out.println(demo.userOptional); //输出superUser
+        System.out.println(demo.myInjectedUser); //输出superUser
 
         // 关闭容器
         applicationContext.close();
