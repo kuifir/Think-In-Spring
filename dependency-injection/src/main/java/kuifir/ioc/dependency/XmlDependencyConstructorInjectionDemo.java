@@ -14,7 +14,7 @@ import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
  * <p>
  * Version: 0.0.1
  */
-public class XmlDependencySetteConstructorInjectionDemo {
+public class XmlDependencyConstructorInjectionDemo {
     public static void main(String[] args) {
         DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 
