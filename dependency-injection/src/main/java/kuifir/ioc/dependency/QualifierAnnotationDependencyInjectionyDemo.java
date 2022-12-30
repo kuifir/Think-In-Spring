@@ -41,14 +41,14 @@ public class QualifierAnnotationDependencyInjectionyDemo {
 
     @Bean
     @Qualifier //进行逻辑分组
-    public User user1(){
+    public static User user1(){
         User user = new User();
         user.setId(7L);
         return user;
     }
     @Bean
     @Qualifier // 进行分组
-    public User user2(){
+    public static User user2(){
         User user = new User();
         user.setId(8L);
         return user;
@@ -56,14 +56,14 @@ public class QualifierAnnotationDependencyInjectionyDemo {
 
     @Bean
     @UserGroup // 进行分组
-    public User user3(){
+    public static User user3(){
         User user = new User();
         user.setId(9L);
         return user;
     }
     @Bean
     @UserGroup // 进行分组
-    public User user4(){
+    public static User user4(){
         User user = new User();
         user.setId(10L);
         return user;
@@ -89,7 +89,7 @@ public class QualifierAnnotationDependencyInjectionyDemo {
         System.out.println(demo.user); //输出superUser
         System.out.println(demo.namedUser);// 输出user
 
-        System.out.println(demo.allUsers); // 输出 user+superUser
+        System.out.println(demo.allUsers); // 输出 user+superUser+user1+user2 +  user3+user4
         System.out.println(demo.qualifierUsers); // 输出 user1+user2 +  user3+user4
         System.out.println(demo.groupedUsers); // 输出 user3+user4
         // 关闭容器
