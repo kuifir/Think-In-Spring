@@ -1,8 +1,11 @@
 package kuifir.ioc.overview.domain;
 
 import kuifir.ioc.overview.enums.City;
+import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.core.io.Resource;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,7 +20,7 @@ import java.util.List;
  * <p>
  * Version: 0.0.1
  */
-public class User {
+public class User implements BeanNameAware {
     private Long id;
     private String name;
     private City city;
@@ -25,6 +28,9 @@ public class User {
     private List<City> lifeCities;
 
     private Resource configFileLocation;
+
+    // 当前bean的名称
+    private transient String beanName;
 
     public City[] getWorkCities() {
         return workCities;
@@ -91,5 +97,20 @@ public class User {
         user.setName("kuifir");
         user.setId(1L);
         return user;
+    }
+
+    @PostConstruct
+    public void init() {
+        System.out.println("User Bean["+ beanName+"] 初始化...");
+    }
+
+    @PreDestroy
+    public void destory(){
+        System.out.println("User Bean["+ beanName+"] 销毁");
+    }
+
+    @Override
+    public void setBeanName(String name) {
+        this.beanName = name;
     }
 }
