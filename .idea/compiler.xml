@@ -10,6 +10,7 @@
         <module name="spring-bean" />
         <module name="dependency-source" />
         <module name="ioc-container-overview" />
+        <module name="bean-lifecycle" />
         <module name="dependency-lookup" />
         <module name="bean-scope" />
         <module name="java-beans-demo" />
