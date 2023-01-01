@@ -427,3 +427,77 @@ InitializingBean#afterPropertiesSet：UserFactory 初始化中
 ### 内建可查找的依赖 
 
 ### 依赖查找中的经典异常   
+## 依赖来源
+- 依赖注入的来源要比依赖查找的来源多一个非spring容器进行管理的对象
+- Spring IOC的三种依赖来源，自定义注册的Spring bean、内建的Spring bean以及内建的可注入的依赖，
+其中自定义注册的Spring bean基本上是通过xml、注解或者api注册BeanDefination创建的，
+内建的Spring bean是通过registerSingleton()创建的
+，内建的可注入的依赖是通过registerResolveDependency()创建的，
+后续如果我们需要往Spring容器里放入一些非Spring托管的bean但又可以被依赖注入的, 
+可以通过registerResolveDependency() API实现
+
+
+## SpringBean作用域
+- Singleton Bean 无论是依赖注入还是依赖查找，均为同一个对象
+Prototype Bean 无论是依赖注入还是依赖查找，均为新生成的一个对象
+- 如果依赖注入集合对象，Singleton Bean 和 Prototype Bean 均会存在一个
+Prototype Bean 有别于其他地方依赖注入的 Prototype Bean(依然是重新生成的)
+
+- 无论是 Singleton Bean 还是Prototype Bean 均会执行初始化方法回调
+不过仅有Singleton Bean 会执行 销毁方法回调
+
+## Spring Bean生命周期
+
+### Spring Bean元信息配置
+### Spring Bean元信息解析
+### Spring BeanDefinition 注册
+- 检验bean是否注册过，如果注册过，查看是否允许重复注册，不允许抛出异常，允许放进map中
+- bean没有注册过，加锁，存放在map中，beanName存放在ArrayList中
+### Spring BeanDefinition的合并阶段
+ - 没有继承的Bean定义最终会生成RootBeanDefinition，这种BeanDefinition不需要合并，禁止对setParentName方法设置值。而存在parent的Bean定义则生成的是普通的GenericBeanDefinition，需要合并parent的BeanDefinition属性。
+ - AbstractBeanFactory的getMergedBeanDefinition(String beanName)方法提供了BeanDefinition的合并逻辑的实现。执行最终合并的是其中的mbd.overrideFrom(bd),将子bean和父bean的属性进行合并。
+### Spring Bean Class加载阶段
+- AbstractBeanFactory#resolveBeanClass中将string类型的beanClass 通过当前线程Thread.currentThread().getContextClassLoader(),Class.forName来获取class对象,将beanClass变为Class类型对象
+### Spring Bean 实例化前
+- InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation 若返回为null，则返回默认的实例对象;
+若返回不为null，则此对象为最终返回的对象，也就是实例化了一个与配置文件中不同的新的对象
+### Spring Bean 实例化阶段
+- 想要生成一个 Bean，那么需要先根据其 Class 对象创建一个 Bean 的实例对象，然后进行一系列的初始化工作。在创建 Bean 的实例对象的过程中，传统的实例化方式（大多数情况）使用 InstantiationStrategy 这个接口来实现，获取默认构造器，然后通过它创建一个实例对象。还有一种方式就是需要通过构造器注入相关的依赖对象，首先会获取构造器中的参数对象（依赖注入，入口：DefaultListableBeanFactory#resolveDependency，前面已经分析过了），根据这些需要注入的依赖对象，通过指定的构造器创建一个实例对象。
+- 之所以类型的优先级最高，是因为在
+  ``` java DefaultListableBeanFactory#findAutowireCandidates 中：
+  String[] candidateNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(this, requiredType, true, descriptor.isEager());
+  ```
+   candidateNames 是调用 lbf.getBeanNamesForType 获取的，也就是说是通过类型获取的Bean名称列表，通过名称列表遍历获取并获取Bean实例，遍历时会筛选 Qualifer :
+  ``` java 
+  if (!isSelfReference(beanName, candidate) && isAutowireCandidate(candidate, fallbackDescriptor) &&
+  	(!multiple || getAutowireCandidateResolver().hasQualifier(descriptor))) {
+  	addCandidateEntry(result, candidate, descriptor, requiredType);
+  }
+  ```
+  然后返回结果 matchingBeans 也就是：
+   ```java 
+  Map<String, Object> matchingBeans = findAutowireCandidates(beanName, type, descriptor); 
+    ```
+  接下来会 matchingBeans 中筛选出唯一的一个 beanName，即determineAutowireCandidate方法的结果：
+  ```java 
+  autowiredBeanName = determineAutowireCandidate(matchingBeans, descriptor);
+  ```
+  determineAutowireCandidate 方法中根据 primary -> priority -> resolvableDependencies.containsValue(beanInstance) -> matchesBeanName(candidateName, descriptor.getDependencyName())；
+  matchesBeanName 中 就是通过名称或者别名来匹配。
+  所以，顺序为 ` type->qualifer-> primary -> priority -> resolvableDependencies.containsValue(beanInstance) -> beanName `
+  ### Spring Bean 实例化后阶段
+  ```java
+  // 实例化后的回调
+  @Override
+  public boolean postProcessAfterInstantiation(Object bean, String beanName) throws BeansException {
+      if (ObjectUtils.nullSafeEquals("user", beanName) && User.class.equals(bean.getClass())) {
+          // 此时属性还没有赋值，返回false 表示对象不允许属性赋值（将元信息填入到属性指）
+          return false;
+      }
+      return true
+  }
+  ```
+### Spring Bean 属性赋值前阶段
+-  postProcessBeforeInstantiation()在bean实例化前回调,返回实例则不对bean实例化,返回null则进行spring bean实例化(doCreateBean);
+-  postProcessAfterInstantiation()在bean实例化后在填充bean属性之前回调,返回true则进行下一步的属性填充,返回false:则不进行属性填充
+-  postProcessProperties在属性赋值前的回调在applyPropertyValues之前操作可以对属性添加或修改等操作最后在通过applyPropertyValues应用bean对应的wapper对象
