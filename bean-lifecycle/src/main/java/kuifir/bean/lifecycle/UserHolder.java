@@ -2,12 +2,11 @@ package kuifir.bean.lifecycle;
 
 import kuifir.ioc.overview.domain.User;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanClassLoaderAware;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.beans.factory.BeanNameAware;
+import org.springframework.beans.factory.*;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Package: kuifir.bean.lifecycle
@@ -20,7 +19,7 @@ import org.springframework.core.env.Environment;
  * <p>
  * Version: 0.0.1
  */
-public class UserHolder implements BeanNameAware, BeanFactoryAware, BeanClassLoaderAware, EnvironmentAware {
+public class UserHolder implements BeanNameAware, BeanFactoryAware, BeanClassLoaderAware, EnvironmentAware, InitializingBean {
     private User user;
     private Integer number;
     private String description;
@@ -28,6 +27,13 @@ public class UserHolder implements BeanNameAware, BeanFactoryAware, BeanClassLoa
     private BeanFactory beanFactory;
     private ClassLoader classLoader;
     private Environment environment;
+
+    public UserHolder() {
+    }
+
+    public UserHolder(User user) {
+        this.user = user;
+    }
 
     public User getUser() {
         return user;
@@ -82,5 +88,24 @@ public class UserHolder implements BeanNameAware, BeanFactoryAware, BeanClassLoa
     @Override
     public void setEnvironment(Environment environment) {
         this.environment = environment;
+    }
+
+    @PostConstruct
+    public void initPostConstruct(){
+        // postProcessBeforeInitialization V3-> initPostConstruct V4
+        this.description = "The user holder V4";
+        System.out.println("initPostConstruct() = "  + description);
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        // initPostConstruct V4 -> afterPropertiesSet V5
+        this.description = "The user holder V5";
+        System.out.println("afterPropertiesSet() = "  + description);
+    }
+    public void init(){
+        // afterPropertiesSet V5 -> 自定义初始化方法 V6
+        this.description = "The user holder V6";
+        System.out.println("afterPropertiesSet() = "  + description);
     }
 }

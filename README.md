@@ -513,3 +513,27 @@ Prototype Bean 有别于其他地方依赖注入的 Prototype Bean(依然是重�
 - ApplicationEventPublisherAware
 - MessageSourceAware
 - ApplicationContextAware
+### Spring Bean 初始化前阶段
+
+通过XmlBeanDefinitionReader loadBeanDefinitions是将xml中bean对应的beanDefinition注册到beanFactory中,底层通过BeanDefinitionReaderUtils#registerBeanDefinition()方法实现,这个在BeanDefinition注册阶段讲过,这个时候只是注册beanDefinition没有像ApplicationContext.refresh()中的registerBeanPostProcessors()将bean post Processor添加到beanFactory的beanPostProcessors list集合中操作,所以xml读取的时候需要手动的addBeanPostProcessor;如果通过ClassPathXmlApplicationContext创建ApplicationContext的方式xml中定义MyInstantiationAwareBeanPostProcessor是可以的,因为ClassPathXmlApplicationContext创建时会执行refresh()操作会从beanFactory中找到MyInstantiationAwareBeanPostProcessor bean后添加到beanPostProcessors的list集合中
+
+InstantiationAwareBeanPostProcessor接口继承了BeanPostProcessor接口，所以通过实现InstantiationAwareBeanPostProcessor接口就可以重写以下两个初始化拦截方法。
+ postProcessBeforeInitialization
+初始化前拦截操作，
+ postProcessAfterInitialization
+- 执行时机：
+在AbstractAutowireCapableBeanFactory的initializeBean初始化方法中：
+  - ①先是执行了invokeAwareMethods方法来对实现BeanNameAware、BeanClassLoaderAware、BeanFactoryAware三个接口的bean进行set属性设置。
+  - ②然后，会调用applyBeanPostProcessorsBeforeInitialization方法去遍历执行所有的BeanPostProcessor的postProcessBeforeInitialization方法。
+  - ③接着是invokeInitMethods方法。
+  - ④最后，会调用applyBeanPostProcessorsAfterInitialization方法去遍历执行所有的BeanPostProcessor的postProcessAfterInitialization方法。
+### Spring Bean 初始化阶段：@PostConstruct、InitializingBean 以及 自定义方法
+
+- PostConstruct(非必须)也会在初始化前阶段执行，因为它跟PreDestroy注解一样被CommonAnnotationBeanPostProcessor管理和执行，CommonAnnotationBeanPostProcessor继承了InitDestroyAnnotationBeanPostProcessor，这个继承类实现了BeanPostProcessor接口，在初始化前阶段InitDestroyAnnotationBeanPostProcessor的postProcessBeforeInitialization方法会被调用，这其中就执行了metadata.invokeInitMethods(bean, beanName);这个方法，也就是注解了PostConstruct的方法。
+
+### Spring Bean 初始化后阶段
+在填充bean属性完成之后initializeBean()中有四个过程
+- 1.aware的接口回调(不包括ApplicationContext相关)
+- 2.postProcessBeforeInitialization()包括两部分关于ApplicationContextAwareProcessor的aware接口回调和自定义bean post processor的postProcessBeforeInitialization回调
+- 3.invokeInitMethods() bean初始化的回调比如实现InitializingBean接口
+- 4.applyBeanPostProcessorsAfterInitialization() bean初始化之后的回调
