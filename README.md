@@ -551,3 +551,11 @@ getBean的操作就是我们之前那么多节课分析的一顿操作的过程�
 然后所有的非延迟单例都加载完毕之后，再重新循环副本，判断bean是否是SmartInitializingSingleton，
 如果是的话执行SmartInitializingSingleton#afterSingletonsInstantiated。
 这保证执行afterSingletonsInstantiated的时候的bean一定是完整的。
+
+### Spring Bean 销毁前阶段
+
+- DestructionAwareBeanPostProcessor#postProcessBeforeDestruction
+
+- 销毁Bean 并不意味这个Bean 被垃圾回收了，在当前容器内被销毁
+
+### Spring Bean 销毁阶段

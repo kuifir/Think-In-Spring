@@ -3,7 +3,8 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         https://www.springframework.org/schema/beans/spring-beans.xsd">
-    <bean id="userHolder" class="kuifir.bean.lifecycle.UserHolder" autowire="constructor" init-method="init">
+    <bean id="userHolder" class="kuifir.bean.lifecycle.UserHolder" autowire="constructor"
+          init-method="init" destroy-method="doDestroy">
         <property name="description" value="the User Holder"/>
     </bean>
 </beans>

@@ -7,6 +7,7 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 /**
  * Package: kuifir.bean.lifecycle
@@ -19,7 +20,8 @@ import javax.annotation.PostConstruct;
  * <p>
  * Version: 0.0.1
  */
-public class UserHolder implements BeanNameAware, BeanFactoryAware, BeanClassLoaderAware, EnvironmentAware, InitializingBean, SmartInitializingSingleton{
+public class UserHolder implements BeanNameAware, BeanFactoryAware, BeanClassLoaderAware, EnvironmentAware,
+        InitializingBean, SmartInitializingSingleton, DisposableBean{
     private User user;
     private Integer number;
     private String description;
@@ -124,5 +126,24 @@ public class UserHolder implements BeanNameAware, BeanFactoryAware, BeanClassLoa
         // postProcessAfterInitialization V7 ->SmartInitializingSingleton#afterSingletonsInstantiated V8
         this.description = "The user holder V8";
         System.out.println("afterSingletonsInstantiated() = "  + description);
+    }
+
+    @PreDestroy
+    public void preDistroy(){
+        // DestructionAwareBeanPostProcessor#postProcessBeforeDestruction V9 -> @PreDestroy V10
+        this.description = "The user holder V10";
+        System.out.println("preDistroy() = "  + description);
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        // @PreDestroy V10 -> DisposableBean V11
+        this.description = "The user holder V11";
+        System.out.println("destroy() = "  + description);
+    }
+    public void doDestroy(){
+        // DisposableBean V11 -> 自定义销毁方法
+        this.description = "The user holder V12";
+        System.out.println("destroy() = "  + description);
     }
 }
