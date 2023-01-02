@@ -501,3 +501,15 @@ Prototype Bean 有别于其他地方依赖注入的 Prototype Bean(依然是重�
 -  postProcessBeforeInstantiation()在bean实例化前回调,返回实例则不对bean实例化,返回null则进行spring bean实例化(doCreateBean);
 -  postProcessAfterInstantiation()在bean实例化后在填充bean属性之前回调,返回true则进行下一步的属性填充,返回false:则不进行属性填充
 -  postProcessProperties在属性赋值前的回调在applyPropertyValues之前操作可以对属性添加或修改等操作最后在通过applyPropertyValues应用bean对应的wapper对象
+### Aware接口回调阶段
+- BeanNameAware
+- BeanClassLoaderAware
+- BeanFactoryAware
+
+后面这几个在ApplicationContext的生命周期中，基本的BeanFactory 回调不到这些接口
+- EnvironmentAware
+- EmbeddedValueResolverAware
+- ResourceLoaderAware
+- ApplicationEventPublisherAware
+- MessageSourceAware
+- ApplicationContextAware
