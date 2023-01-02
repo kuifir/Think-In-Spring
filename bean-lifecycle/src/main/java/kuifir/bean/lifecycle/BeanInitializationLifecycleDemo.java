@@ -30,9 +30,9 @@ public class BeanInitializationLifecycleDemo {
                 if(ObjectUtils.nullSafeEquals("userHolder", beanName) && bean.getClass().equals(UserHolder.class)){
                     UserHolder userHolder = (UserHolder)bean;
                     userHolder.setDescription("the User Holder V3");
-                    return bean;
                 }
-                return null;
+                // 返回null 没有执行User的初始化的@PostConstruct标注的方法
+                return bean;
             }
 
             @Override
@@ -42,9 +42,8 @@ public class BeanInitializationLifecycleDemo {
                     // 自定义初始化方法 V6 -> postProcessAfterInitialization V7
                     userHolder.setDescription("the User Holder V7");
                     System.out.println(userHolder.getDescription());
-                    return bean;
                 }
-                return null;
+                return bean;
             }
         });
         // 添加 CommonAnnotationBeanPostProcessor 解决 @PostConstruct
