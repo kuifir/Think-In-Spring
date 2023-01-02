@@ -19,7 +19,7 @@ import javax.annotation.PostConstruct;
  * <p>
  * Version: 0.0.1
  */
-public class UserHolder implements BeanNameAware, BeanFactoryAware, BeanClassLoaderAware, EnvironmentAware, InitializingBean {
+public class UserHolder implements BeanNameAware, BeanFactoryAware, BeanClassLoaderAware, EnvironmentAware, InitializingBean, SmartInitializingSingleton{
     private User user;
     private Integer number;
     private String description;
@@ -107,5 +107,22 @@ public class UserHolder implements BeanNameAware, BeanFactoryAware, BeanClassLoa
         // afterPropertiesSet V5 -> 自定义初始化方法 V6
         this.description = "The user holder V6";
         System.out.println("afterPropertiesSet() = "  + description);
+    }
+
+    @Override
+    public void afterSingletonsInstantiated() {
+        // ApplicationContext在refresh的操作里等beanFactory的一系列操作，
+        // messageSource，注册listener等操作都完毕之后通过finishBeanFactoryInitialization开始实例化所有非懒加载的单例bean，
+        // 具体是在finishBeanFactoryInitialization调用beanFactory#preInstantiateSingletons进行的，
+        // preInstantiateSingletons里面就是通过beanDefinitionNames循环调用getBean来实例化bean的，
+        // 这里有个细节，beanDefinitionNames是拷贝到一个副本中，循环副本，使得还能注册新的beanDefinition.
+        // getBean的操作就是我们之前那么多节课分析的一顿操作的过程，最终得到一个完整的状态的bean。
+        // 然后所有的非延迟单例都加载完毕之后，再重新循环副本，判断bean是否是SmartInitializingSingleton，
+        // 如果是的话执行SmartInitializingSingleton#afterSingletonsInstantiated。
+        // 这保证执行afterSingletonsInstantiated的时候的bean一定是完整的。
+
+        // postProcessAfterInitialization V7 ->SmartInitializingSingleton#afterSingletonsInstantiated V8
+        this.description = "The user holder V8";
+        System.out.println("afterSingletonsInstantiated() = "  + description);
     }
 }

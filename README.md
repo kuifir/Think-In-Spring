@@ -537,3 +537,17 @@ InstantiationAwareBeanPostProcessor接口继承了BeanPostProcessor接口，所�
 - 2.postProcessBeforeInitialization()包括两部分关于ApplicationContextAwareProcessor的aware接口回调和自定义bean post processor的postProcessBeforeInitialization回调
 - 3.invokeInitMethods() bean初始化的回调比如实现InitializingBean接口
 - 4.applyBeanPostProcessorsAfterInitialization() bean初始化之后的回调
+### Spring Bean 初始化完成阶段
+
+- SmartInitializingSingleton 通常在 Spring　ApplicationContext 场景使用
+- preInstantiateSingletons 将已经注册的 BeanDefinition 初始化成 Spring Bean
+
+- ApplicationContext在refresh的操作里等beanFactory的一系列操作，
+messageSource，注册listener等操作都完毕之后通过finishBeanFactoryInitialization开始实例化所有非懒加载的单例bean，
+具体是在finishBeanFactoryInitialization调用beanFactory#preInstantiateSingletons进行的，
+preInstantiateSingletons里面就是通过beanDefinitionNames循环调用getBean来实例化bean的，
+这里有个细节，beanDefinitionNames是拷贝到一个副本中，循环副本，使得还能注册新的beanDefinition.
+getBean的操作就是我们之前那么多节课分析的一顿操作的过程，最终得到一个完整的状态的bean。
+然后所有的非延迟单例都加载完毕之后，再重新循环副本，判断bean是否是SmartInitializingSingleton，
+如果是的话执行SmartInitializingSingleton#afterSingletonsInstantiated。
+这保证执行afterSingletonsInstantiated的时候的bean一定是完整的。

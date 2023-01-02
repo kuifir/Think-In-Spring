@@ -41,6 +41,7 @@ public class BeanInitializationLifecycleDemo {
                     UserHolder userHolder = (UserHolder)bean;
                     // 自定义初始化方法 V6 -> postProcessAfterInitialization V7
                     userHolder.setDescription("the User Holder V7");
+                    System.out.println(userHolder.getDescription());
                     return bean;
                 }
                 return null;
@@ -51,6 +52,10 @@ public class BeanInitializationLifecycleDemo {
         String[] xmlLocation = {"classpath:/META-INF\\dependency-lookup-context.xml","META-INF\\bean-constructor-dependency-injection.xml"};
         XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(beanFactory);
         int xmlBeanNumber = xmlBeanDefinitionReader.loadBeanDefinitions(xmlLocation);
+        // 显式调用preInstantiateSingletons
+        // SmartInitializingSingleton 通常在 Spring　ApplicationContext 场景使用
+        // preInstantiateSingletons 将已经注册的 BeanDefinition 初始化成 Spring Bean
+        beanFactory.preInstantiateSingletons();
         System.out.println("加载XML 中 Bean数量 " + xmlBeanNumber);
         User user = beanFactory.getBean("user", User.class);
         System.out.println(user);
