@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:users="http://kuifir.com/schema/users"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://kuifir.com/schema/users
+        http://kuifir.com/schema/users.xsd">
+    <!--    <bean id="user" class="kuifir.ioc.overview.domain.User">-->
+    <!--        <property name="id" value="1"/>-->
+    <!--        <property name="name" value="kuifir"/>-->
+
+    <!--        <property name="city" value="BEIJING"/>-->
+    <!--    </bean>-->
+    <users:users id="333" name="拓展 XML 标签" city="BEIJING"/>
+</beans>
