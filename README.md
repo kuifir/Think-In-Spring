@@ -598,3 +598,15 @@ BeanFactory 的默认实现为 DefaultListableBeanFactory，其中 Bean生命周
 - 16.bean重新的填充覆盖来更新bean preInstantiateSingletons()
 - 17.bean销毁前postProcessBeforeDestruction()
 - 18.bean销毁,比如@PreDestroy
+
+## Spring配置元信息
+
+### 扩展Spring xml 标签
+
+- AbstractApplicationContext执行refresh方法，其中调用obtainFreshBeanFactory()->abstract refreshBeanFactory(),此方法被子类AbstractRefreshableApplicationContext(抽象)实现，来执行loadBeanDefinitions(beanFactory);此load方法又被AbstractXmlApplicationContext （也是抽象的，继承AbstractRefreshableConfigApplicationContext）实现。
+- 接着，AbstractXmlApplicationContext的loadBeanDefinitions中会执行XmlBeanDefinitionReade对象r对loadBeanDefinitions的调用，然后是doLoadBeanDefinitions的调用执行META-INF/users-context.xml的解析。用的是XMLBeanDefinitionReader的DefaultDocumentLoader进行解析。最终解析为Document对象（是对user-context.xml的封装映射）。然后传入registerBeanDefinition方法进行注册BeanDefinition。
+- 最终，会创建一个BeanDefinitionParserDelegate来传入parseBeanDefinitions(root,delegate)进行解析，然后是delegate.parseCustomElement(ele)来解析自定义元素<users:user id="" name="" citys=""/>
+- 当解析到users:user标签时，会反推到命名空间：xmlns:users="http://time.geekbang.org/schema/users"
+- 根据命名空间找到spring.handlers中定义的Handler实现：http\://time.geekbang.org/schema/users=org.geekbang.thinking.in.spring.configuration.metadata.UsersNamespaceHandler
+- 然后利用UsersNamespaceHandler的parse方法来解析BeanDefinition并注册到spring容器中。
+- 其他说明：XmlBeanDefinitionReader将META-INF/users-context.xml解析为Resource资源，然后loadBeanDefinitions。
