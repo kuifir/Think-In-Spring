@@ -610,3 +610,6 @@ BeanFactory 的默认实现为 DefaultListableBeanFactory，其中 Bean生命周
 - 根据命名空间找到spring.handlers中定义的Handler实现：http\://time.geekbang.org/schema/users=org.geekbang.thinking.in.spring.configuration.metadata.UsersNamespaceHandler
 - 然后利用UsersNamespaceHandler的parse方法来解析BeanDefinition并注册到spring容器中。
 - 其他说明：XmlBeanDefinitionReader将META-INF/users-context.xml解析为Resource资源，然后loadBeanDefinitions。
+### 基于Property 扩展外部化配置
+-  扩展Environment中的 PropertySource, 修改获取顺序
+-  扩展PropertySource 必须在 refresh方法之前完成
