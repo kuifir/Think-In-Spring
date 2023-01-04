@@ -12,6 +12,7 @@
         <module name="ioc-container-overview" />
         <module name="dependency-lookup" />
         <module name="bean-lifecycle" />
+        <module name="configuration-metadata" />
         <module name="bean-scope" />
         <module name="java-beans-demo" />
       </profile>
