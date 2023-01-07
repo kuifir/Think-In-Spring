@@ -7,17 +7,22 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="dependency-injection" />
+        <module name="volatile" />
         <module name="spring-bean" />
-        <module name="dependency-source" />
-        <module name="ioc-container-overview" />
-        <module name="dependency-lookup" />
         <module name="i18n" />
-        <module name="bean-lifecycle" />
+        <module name="ioc-container-overview" />
+        <module name="validation" />
+        <module name="dependency-source" />
+        <module name="java-beans-demo" />
+        <module name="dependency-lookup" />
         <module name="configuration-metadata" />
         <module name="resource" />
         <module name="bean-scope" />
-        <module name="java-beans-demo" />
+        <module name="bean-lifecycle" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="volatile" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
