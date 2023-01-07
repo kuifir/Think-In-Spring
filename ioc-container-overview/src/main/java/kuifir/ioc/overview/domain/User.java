@@ -32,6 +32,16 @@ public class User implements BeanNameAware {
     // 当前bean的名称
     private transient String beanName;
 
+    private Company company;
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
     public City[] getWorkCities() {
         return workCities;
     }
@@ -53,6 +63,8 @@ public class User implements BeanNameAware {
                 ", workCities=" + Arrays.toString(workCities) +
                 ", lifeCities=" + lifeCities +
                 ", configFileLocation=" + configFileLocation +
+                ", beanName='" + beanName + '\'' +
+                ", company=" + company +
                 '}';
     }
 
