@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Package: kuifir.ioc.overview.domain
@@ -34,6 +35,43 @@ public class User implements BeanNameAware {
 
     private Company company;
 
+    private Properties context;
+
+    private String contextToText;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", city=" + city +
+                ", workCities=" + Arrays.toString(workCities) +
+                ", lifeCities=" + lifeCities +
+                ", configFileLocation=" + configFileLocation +
+                ", beanName='" + beanName + '\'' +
+                ", company=" + company +
+                ", context=" + context +
+                ", contextToText='" + contextToText + '\'' +
+                '}';
+    }
+
+    public String getContextToText() {
+        return contextToText;
+    }
+
+    public void setContextToText(String contextToText) {
+        this.contextToText = contextToText;
+    }
+
+    public Properties getContext() {
+        return context;
+    }
+
+    public void setContext(Properties context) {
+        this.context = context;
+    }
+
+
     public Company getCompany() {
         return company;
     }
@@ -52,20 +90,6 @@ public class User implements BeanNameAware {
 
     public void setLifeCities(List<City> lifeCities) {
         this.lifeCities = lifeCities;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", city=" + city +
-                ", workCities=" + Arrays.toString(workCities) +
-                ", lifeCities=" + lifeCities +
-                ", configFileLocation=" + configFileLocation +
-                ", beanName='" + beanName + '\'' +
-                ", company=" + company +
-                '}';
     }
 
     public void setWorkCities(City[] workCities) {

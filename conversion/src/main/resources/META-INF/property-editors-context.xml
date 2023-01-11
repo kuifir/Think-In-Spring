@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util
+        https://www.springframework.org/schema/util/spring-util.xsd
+">
+
+    <bean id="user" class="kuifir.ioc.overview.domain.User">
+        <property name="id" value="1"/>
+        <property name="name" value="测试自定义PropertyEditor在Spring中的应用"/>
+
+        <property name="context">
+            <value>
+                id = 1
+                name = 测试自定义PropertyEditor在Spring中的应用
+            </value>
+        </property>
+        <property name="contextToText">
+            <util:properties id="properties">
+                <prop key="id">1</prop>
+                <prop key="name">测试自定义ConditionalGenericConverter在Spring中的应用</prop>
+            </util:properties>
+        </property>
+    </bean>
+
+    <!--    <bean id="customEditorConfigurer" class="org.springframework.beans.factory.config.CustomEditorConfigurer">-->
+    <!--        <property name="customEditors" >-->
+    <!--            <map>-->
+    <!--                <entry key="java.util.Properties" value="kuifir.conversion.StringToPropertiesPropertyEditor"/>-->
+    <!--            </map>-->
+    <!--        </property>-->
+    <!--    </bean>-->
+
+
+    <!--    <bean class="kuifir.conversion.CustomizedPropertyEditorRegistrar"/>-->
+    <bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+        <property name="propertyEditorRegistrars">
+            <list>
+                <bean class="kuifir.conversion.CustomizedPropertyEditorRegistrar"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean name="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <bean class="kuifir.conversion.PropertiesToStringConverter"/>
+        </property>
+    </bean>
+</beans>
