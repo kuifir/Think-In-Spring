@@ -19,6 +19,7 @@
         <module name="dependency-lookup" />
         <module name="configuration-metadata" />
         <module name="validation" />
+        <module name="generic" />
         <module name="data-binding" />
         <module name="bean-scope" />
       </profile>
