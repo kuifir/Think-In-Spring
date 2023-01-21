@@ -6,23 +6,24 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="conversion" />
+        <module name="annotation" />
         <module name="ioc-container-overview" />
         <module name="java-beans-demo" />
+        <module name="resource" />
         <module name="dependency-source" />
-        <module name="event" />
-        <module name="bean-scope" />
-        <module name="conversion" />
+        <module name="i18n" />
         <module name="bean-lifecycle" />
         <module name="spring-bean" />
         <module name="volatile" />
-        <module name="i18n" />
+        <module name="event" />
         <module name="dependency-lookup" />
         <module name="configuration-metadata" />
         <module name="validation" />
         <module name="generic" />
         <module name="data-binding" />
         <module name="dependency-injection" />
-        <module name="resource" />
+        <module name="bean-scope" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
