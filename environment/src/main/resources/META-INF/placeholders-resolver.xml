@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd">
+
+   <!-- <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:/META-INF/default.properties"/>
+        <property name="fileEncoding" value="GBK"/>
+    </bean>-->
+    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+        <!--use.name 有优先级问题 -->
+        <property name="location" value="classpath:/META-INF/default.properties"/>
+        <property name="fileEncoding" value="GBK"/>
+    </bean>
+
+    <bean id="user" class="kuifir.ioc.overview.domain.User">
+        <property name="id" value="${user.id}"/>
+        <property name="name" value="${user.name}"/>
+        <property name="city" value="${user.city}"/>
+
+    </bean>
+
+</beans>

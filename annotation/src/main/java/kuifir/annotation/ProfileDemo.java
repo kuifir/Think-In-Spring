@@ -24,7 +24,11 @@ public class ProfileDemo {
         // 默认 profiles = [ "odd" ] （兜底 profiles)
         environment.setDefaultProfiles("odd");
         // 增加活跃 profiles
-        environment.setActiveProfiles("even");
+//        environment.setActiveProfiles("even");
+
+        // -- spring.profiles.active = even
+        // -Dspring.profiles.active=even 可以代替 environment.setActiveProfiles("even");
+
         applicationContext.refresh();
         Integer number = applicationContext.getBean("number",Integer.class);
         System.out.println(number);

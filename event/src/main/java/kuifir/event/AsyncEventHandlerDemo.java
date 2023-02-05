@@ -24,7 +24,7 @@ import java.util.concurrent.Executors;
  */
 public class AsyncEventHandlerDemo {
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
+        AnnotationConfigApplicationContext applicatFionContext = new AnnotationConfigApplicationContext();
 
         // 添加自定义 Spring 事件监听器
         applicationContext.register(MySpringEventListener.class);
