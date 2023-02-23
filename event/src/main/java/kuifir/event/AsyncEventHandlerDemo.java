@@ -12,7 +12,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Package: kuifir.event
+ * Package: kuifir. Event
  * <p>
  * Description： 异步事件处理示例
  * <p>
@@ -24,7 +24,7 @@ import java.util.concurrent.Executors;
  */
 public class AsyncEventHandlerDemo {
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext applicatFionContext = new AnnotationConfigApplicationContext();
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
 
         // 添加自定义 Spring 事件监听器
         applicationContext.register(MySpringEventListener.class);
@@ -34,7 +34,7 @@ public class AsyncEventHandlerDemo {
         // 依赖查找 ApplicationEventMulticaster
         ApplicationEventMulticaster applicationEventMulticaster =
                 applicationContext.getBean(AbstractApplicationContext.APPLICATION_EVENT_MULTICASTER_BEAN_NAME, ApplicationEventMulticaster.class);
-        if(applicationEventMulticaster instanceof SimpleApplicationEventMulticaster){
+        if (applicationEventMulticaster instanceof SimpleApplicationEventMulticaster) {
             SimpleApplicationEventMulticaster simpleApplicationEventMulticaster
                     = (SimpleApplicationEventMulticaster) applicationEventMulticaster;
             ExecutorService taskExecutor = Executors.newSingleThreadExecutor(new CustomizableThreadFactory("my-spring-event-thread-pool"));
@@ -43,15 +43,15 @@ public class AsyncEventHandlerDemo {
 
             // 添加 ContextClosedEvent 事件处理
             applicationEventMulticaster.addApplicationListener((ApplicationListener<ContextClosedEvent>) event -> {
-               if(!taskExecutor.isShutdown()){
-                   taskExecutor.shutdown();
-               }
+                if (!taskExecutor.isShutdown()) {
+                    taskExecutor.shutdown();
+                }
             });
-            simpleApplicationEventMulticaster.setErrorHandler(e->{
+            simpleApplicationEventMulticaster.setErrorHandler(e -> {
                 System.err.println("Spring 发生异常，原因：" + e.getMessage());
             });
             // 添加故意抛出异常
-            applicationContext.addApplicationListener((ApplicationListener<MySpringEvent>)event ->{
+            applicationContext.addApplicationListener((ApplicationListener<MySpringEvent>) event -> {
                 throw new RuntimeException("故意抛出异常");
             });
         }
